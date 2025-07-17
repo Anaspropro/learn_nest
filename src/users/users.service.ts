@@ -42,7 +42,11 @@ export class UsersService {
 
   findAll(role?: 'INTERN' | 'ENGINEER' | 'ADMIN') {
     if (role) {
-      return this.users.filter(user => user.role === role);
+      const roleArray = this.users.filter(user => user.role === role);
+      if (roleArray.length === 0) {
+        throw new NotFoundException(`No users found with role: ${role}`);
+      }
+      return roleArray;
     }
     return this.users;
   }
@@ -51,7 +55,7 @@ export class UsersService {
     const user =  this.users.find(user => user.id === id);
 
     if(!user) throw new NotFoundException('User Not Found!!!')
-      
+
     return user
   }
 
